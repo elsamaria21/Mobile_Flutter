@@ -35,13 +35,15 @@ class UserModel {
 }
 
 void main() {
-  Map<String, dynamic> jsonResponse = {'name': 'Elsa Maria Condoleza Tambunan', 'age': 20};
+  Map<String, dynamic> jsonResponse = {
+    'name': 'Elsa Maria Condoleza Tambunan',
+    'age': 20,
+  };
 
   UserModel user = UserModel.fromJson(jsonResponse);
 
   print('Nama: ${user.name}');
   print('ID: ${user.id}');
   print('Status: ${user.isActive}');
-
   print('JSON: ${user.toJson()}');
 }
