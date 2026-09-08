@@ -11,275 +11,298 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Kartu Harga Layanan IT',
+      title: 'Layanan IT',
       theme: ThemeData(
-        fontFamily: 'Arial',
-        scaffoldBackgroundColor: const Color(0xFFF5F7FB),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
-      home: const PricingPage(),
+      home: const HomeScreen(),
     );
   }
 }
 
-class PricingPage extends StatelessWidget {
-  const PricingPage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  static const List<Map<String, dynamic>> katalog = [
+    {
+      'nama': 'Paket Basic',
+      'harga': 'Rp 2.500.000',
+      'kategori': 'Layanan IT',
+      'icon': Icons.computer,
+      'deskripsi':
+          'Paket layanan IT dasar untuk kebutuhan bisnis dan sistem sederhana.',
+    },
+    {
+      'nama': 'Paket Profesional',
+      'harga': 'Rp 5.000.000',
+      'kategori': 'Layanan IT',
+      'icon': Icons.laptop_mac,
+      'deskripsi':
+          'Solusi IT profesional untuk kebutuhan bisnis dengan fitur lengkap.',
+    },
+    {
+      'nama': 'Paket Enterprise',
+      'harga': 'Rp 10.000.000',
+      'kategori': 'Layanan IT',
+      'icon': Icons.business,
+      'deskripsi': 'Solusi IT lengkap untuk perusahaan dengan kebutuhan sistem yang kompleks.',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
+
       appBar: AppBar(
         title: const Text(
-          'Kartu Harga Layanan IT',
+          'Layanan IT',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        backgroundColor: Colors.blue[800],
+        foregroundColor: Colors.white,
         centerTitle: true,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        elevation: 0,
+      ),
+
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          const Text(
+            'Katalog Layanan',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+
+          const SizedBox(height: 5),
+
+          const Text(
+            'Pilih layanan IT yang sesuai dengan kebutuhan Anda.',
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ),
+
+          const SizedBox(height: 20),
+
+          _buildCard(context, katalog[0]),
+
+          const SizedBox(height: 15),
+
+          _buildCard(context, katalog[1]),
+
+          const SizedBox(height: 15),
+
+          _buildCard(context, katalog[2]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCard(BuildContext context, Map<String, dynamic> data) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(18),
+
+        // ICON
+        leading: Container(
+          width: 55,
+          height: 55,
+          decoration: BoxDecoration(
+            color: Colors.blue[50],
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Icon(data['icon'], color: Colors.blue[800], size: 30),
+        ),
+
+        // TITLE
+        title: Text(
+          data['nama'],
+          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        ),
+
+        // SUBTITLE
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 7),
+          child: Text(
+            '${data['harga']}\n${data['kategori']}',
+            style: const TextStyle(height: 1.5),
+          ),
+        ),
+
+        // CTA
+        trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailScreen(
+                nama: data['nama'],
+                harga: data['harga'],
+                kategori: data['kategori'],
+                deskripsi: data['deskripsi'],
+                icon: data['icon'],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class DetailScreen extends StatefulWidget {
+  final String nama;
+  final String harga;
+  final String kategori;
+  final String deskripsi;
+  final IconData icon;
+
+  const DetailScreen({
+    super.key,
+    required this.nama,
+    required this.harga,
+    required this.kategori,
+    required this.deskripsi,
+    required this.icon,
+  });
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: const Text(
+          'Detail Katalog',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.blue[800],
+        foregroundColor: Colors.white,
+        centerTitle: true,
       ),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // =========================
-            // PAKET PROFESIONAL
-            // =========================
-            PricingCard(
-              icon: Icons.laptop_mac,
-              packageName: 'Paket Profesional',
-              description: 'Solusi lengkap untuk kebutuhan bisnis Anda',
-              price: 'Rp 5.000.000',
-              duration: '/ proyek',
-              recommended: true,
-              features: const [
-                'Desain UI/UX Khusus',
-                'Setup Database',
-                'Maintenance & Update',
-                'Free Konsultasi',
-              ],
+            Container(
+              width: 110,
+              height: 110,
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Icon(widget.icon, size: 60, color: Colors.blue[800]),
+            ),
+
+            const SizedBox(height: 20),
+
+            Text(
+              widget.nama,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 8),
+            Text(
+              widget.kategori,
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.blue[800],
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            Text(
+              widget.harga,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue[800],
+              ),
             ),
 
             const SizedBox(height: 25),
 
-            // =========================
-            // PAKET STANDAR
-            // =========================
-            PricingCard(
-              icon: Icons.smartphone,
-              packageName: 'Paket Standar',
-              description: 'Solusi untuk startup kecil dan menengah',
-              price: 'Rp 2.500.000',
-              duration: '/ proyek',
-              recommended: false,
-              features: const ['Desain UI/UX Standar', 'Setup Database'],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ======================================================
-// WIDGET KARTU HARGA
-// ======================================================
-
-class PricingCard extends StatelessWidget {
-  final IconData icon;
-  final String packageName;
-  final String description;
-  final String price;
-  final String duration;
-  final bool recommended;
-  final List<String> features;
-
-  const PricingCard({
-    super.key,
-    required this.icon,
-    required this.packageName,
-    required this.description,
-    required this.price,
-    required this.duration,
-    required this.recommended,
-    required this.features,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-
-        // Efek bayangan
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.12),
-            blurRadius: 12,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-
-      // =================================================
-      // STACK
-      // =================================================
-      child: Stack(
-        children: [
-          // Elemen utama kartu
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // =========================
-              // HEADER PAKET
-              // =========================
-              Icon(icon, size: 55, color: const Color(0xFF1769E0)),
-
-              const SizedBox(height: 12),
-
-              Text(
-                packageName,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(20),
               ),
-
-              const SizedBox(height: 6),
-
-              Text(
-                description,
-                style: const TextStyle(fontSize: 13, color: Colors.grey),
-              ),
-
-              const SizedBox(height: 18),
-
-              // =========================
-              // HARGA + DURASI
-              // =========================
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    price,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1769E0),
-                    ),
+                  const Text(
+                    'Deskripsi',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
 
-                  const SizedBox(width: 5),
+                  const SizedBox(height: 10),
 
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 2),
-                    child: Text(
-                      duration,
-                      style: const TextStyle(fontSize: 13, color: Colors.grey),
-                    ),
+                  Text(
+                    widget.deskripsi,
+                    style: const TextStyle(fontSize: 14, height: 1.5),
                   ),
                 ],
               ),
+            ),
 
-              const SizedBox(height: 18),
+            const SizedBox(height: 25),
 
-              // =========================
-              // FITUR LAYANAN
-              // =========================
-              Column(
-                children: features.map((feature) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 9),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.check, size: 18, color: Colors.green),
-
-                        const SizedBox(width: 8),
-
-                        Expanded(
-                          child: Text(
-                            feature,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
-
-              const SizedBox(height: 10),
-
-              // =========================
-              // TOMBOL
-              // =========================
-              SizedBox(
-                width: double.infinity,
-                height: 45,
-                child: ElevatedButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('$packageName dipilih')),
-                    );
-                  },
-
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1769E0),
-                    foregroundColor: Colors.white,
-
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-
-                    elevation: 2,
-                  ),
-
-                  child: const Text(
-                    'Pilih Paket',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isSelected = !isSelected;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isSelected ? Colors.green : Colors.blue,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-              ),
-            ],
-          ),
-
-          // =================================================
-          // BADGE REKOMENDASI
-          // =================================================
-          if (recommended)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
-
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFC107),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-
-                child: const Text(
-                  'Rekomendasi',
-                  style: TextStyle(
-                    fontSize: 11,
+                child: Text(
+                  isSelected ? 'Paket Dipilih ✓' : 'Pilih Paket',
+                  style: const TextStyle(
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
                   ),
                 ),
               ),
             ),
-        ],
+
+            const SizedBox(height: 15),
+
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back),
+                label: const Text('Kembali ke Katalog'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
