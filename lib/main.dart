@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Layanan IT',
+      title: 'Katalog Produk',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
@@ -24,129 +24,175 @@ class MyApp extends StatelessWidget {
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  static const List<Map<String, dynamic>> katalog = [
-    {
-      'nama': 'Paket Basic',
-      'harga': 'Rp 2.500.000',
-      'kategori': 'Layanan IT',
-      'icon': Icons.computer,
-      'deskripsi':
-          'Paket layanan IT dasar untuk kebutuhan bisnis dan sistem sederhana.',
-    },
-    {
-      'nama': 'Paket Profesional',
-      'harga': 'Rp 5.000.000',
-      'kategori': 'Layanan IT',
-      'icon': Icons.laptop_mac,
-      'deskripsi':
-          'Solusi IT profesional untuk kebutuhan bisnis dengan fitur lengkap.',
-    },
-    {
-      'nama': 'Paket Enterprise',
-      'harga': 'Rp 10.000.000',
-      'kategori': 'Layanan IT',
-      'icon': Icons.business,
-      'deskripsi': 'Solusi IT lengkap untuk perusahaan dengan kebutuhan sistem yang kompleks.',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
+    // Data katalog
+    final List<Map<String, dynamic>> katalog = [
+      {
+        'nama': 'Laptop',
+        'harga': 'Rp8.500.000',
+        'icon': Icons.laptop_mac,
+        'warna': Colors.blue,
+        'deskripsi': 'Laptop dengan performa tinggi yang cocok digunakan untuk belajar, mengerjakan tugas, bekerja, dan berbagai aktivitas sehari-hari.',
+      },
+      {
+        'nama': 'Smartphone',
+        'harga': 'Rp4.500.000',
+        'icon': Icons.smartphone,
+        'warna': Colors.green,
+        'deskripsi': 'Smartphone modern dengan desain menarik dan fitur lengkap yang dapat membantu pengguna dalam berkomunikasi dan menjalankan berbagai aplikasi.',
+      },
+      {
+        'nama': 'Headset',
+        'harga': 'Rp750.000',
+        'icon': Icons.headphones,
+        'warna': Colors.orange,
+        'deskripsi': 'Headset dengan desain nyaman yang cocok digunakan untuk mendengarkan musik, menonton video, bermain game, dan mengikuti meeting.',
+      },
+    ];
 
+    return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Layanan IT',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'Katalog Produk',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue[800],
-        foregroundColor: Colors.white,
         centerTitle: true,
+        backgroundColor: Colors.blue,
       ),
 
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           const Text(
-            'Katalog Layanan',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            'Daftar Katalog',
+            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
 
-          const SizedBox(height: 5),
+          const SizedBox(height: 8),
 
           const Text(
-            'Pilih layanan IT yang sesuai dengan kebutuhan Anda.',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
+            'Pilih produk untuk melihat detail katalog.',
+            style: TextStyle(fontSize: 15, color: Colors.grey),
           ),
 
           const SizedBox(height: 20),
 
-          _buildCard(context, katalog[0]),
+          _buildCard(
+            context: context,
+            nama: katalog[0]['nama'],
+            harga: katalog[0]['harga'],
+            icon: katalog[0]['icon'],
+            warna: katalog[0]['warna'],
+            deskripsi: katalog[0]['deskripsi'],
+          ),
 
-          const SizedBox(height: 15),
+          const SizedBox(height: 18),
 
-          _buildCard(context, katalog[1]),
+          _buildCard(
+            context: context,
+            nama: katalog[1]['nama'],
+            harga: katalog[1]['harga'],
+            icon: katalog[1]['icon'],
+            warna: katalog[1]['warna'],
+            deskripsi: katalog[1]['deskripsi'],
+          ),
 
-          const SizedBox(height: 15),
+          const SizedBox(height: 18),
 
-          _buildCard(context, katalog[2]),
+          _buildCard(
+            context: context,
+            nama: katalog[2]['nama'],
+            harga: katalog[2]['harga'],
+            icon: katalog[2]['icon'],
+            warna: katalog[2]['warna'],
+            deskripsi: katalog[2]['deskripsi'],
+          ),
+
+          const SizedBox(height: 30),
         ],
       ),
     );
   }
 
-  Widget _buildCard(BuildContext context, Map<String, dynamic> data) {
+  Widget _buildCard({
+    required BuildContext context,
+    required String nama,
+    required String harga,
+    required IconData icon,
+    required Color warna,
+    required String deskripsi,
+  }) {
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          children: [
+            Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                color: warna.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Icon(icon, size: 50, color: warna),
+            ),
 
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(18),
+            const SizedBox(height: 15),
 
-        // ICON
-        leading: Container(
-          width: 55,
-          height: 55,
-          decoration: BoxDecoration(
-            color: Colors.blue[50],
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Icon(data['icon'], color: Colors.blue[800], size: 30),
-        ),
+            Text(
+              nama,
+              style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+            ),
 
-        // TITLE
-        title: Text(
-          data['nama'],
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-        ),
+            const SizedBox(height: 5),
 
-        // SUBTITLE
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 7),
-          child: Text(
-            '${data['harga']}\n${data['kategori']}',
-            style: const TextStyle(height: 1.5),
-          ),
-        ),
-
-        // CTA
-        trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailScreen(
-                nama: data['nama'],
-                harga: data['harga'],
-                kategori: data['kategori'],
-                deskripsi: data['deskripsi'],
-                icon: data['icon'],
+            Text(
+              harga,
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: warna,
               ),
             ),
-          );
-        },
+
+            const SizedBox(height: 15),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailScreen(
+                        nama: nama,
+                        harga: harga,
+                        icon: icon,
+                        warna: warna,
+                        deskripsi: deskripsi,
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: warna,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 13),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'Lihat Detail',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -155,17 +201,17 @@ class HomeScreen extends StatelessWidget {
 class DetailScreen extends StatefulWidget {
   final String nama;
   final String harga;
-  final String kategori;
-  final String deskripsi;
   final IconData icon;
+  final Color warna;
+  final String deskripsi;
 
   const DetailScreen({
     super.key,
     required this.nama,
     required this.harga,
-    required this.kategori,
-    required this.deskripsi,
     required this.icon,
+    required this.warna,
+    required this.deskripsi,
   });
 
   @override
@@ -173,63 +219,60 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  bool isSelected = false;
+  bool disukai = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: const Text(
           'Detail Katalog',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue[800],
-        foregroundColor: Colors.white,
         centerTitle: true,
+        backgroundColor: widget.warna,
+
+        // ICON BACK
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              width: 110,
-              height: 110,
+              width: 130,
+              height: 130,
               decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(25),
+                color: widget.warna.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(30),
               ),
-              child: Icon(widget.icon, size: 60, color: Colors.blue[800]),
+              child: Icon(widget.icon, size: 70, color: widget.warna),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
 
             Text(
               widget.nama,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
 
-            const SizedBox(height: 8),
-            Text(
-              widget.kategori,
-              style: TextStyle(
-                fontSize: 15,
-                color: Colors.blue[800],
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
 
             Text(
               widget.harga,
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 21,
                 fontWeight: FontWeight.bold,
-                color: Colors.blue[800],
+                color: widget.warna,
               ),
             ),
 
@@ -239,50 +282,45 @@ class _DetailScreenState extends State<DetailScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(20),
+                color: widget.warna.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(18),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Deskripsi',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    'Deskripsi Produk',
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
 
                   Text(
                     widget.deskripsi,
-                    style: const TextStyle(fontSize: 14, height: 1.5),
+                    style: const TextStyle(fontSize: 16, height: 1.6),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 30),
 
             SizedBox(
               width: double.infinity,
               height: 52,
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
                 onPressed: () {
                   setState(() {
-                    isSelected = !isSelected;
+                    disukai = !disukai;
                   });
                 },
+                icon: Icon(disukai ? Icons.favorite : Icons.favorite_border),
+                label: Text(disukai ? 'Produk Disukai' : 'Sukai Produk'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isSelected ? Colors.green : Colors.blue,
+                  backgroundColor: widget.warna,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  isSelected ? 'Paket Dipilih ✓' : 'Pilih Paket',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -290,17 +328,18 @@ class _DetailScreenState extends State<DetailScreen> {
 
             const SizedBox(height: 15),
 
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
-                label: const Text('Kembali ke Katalog'),
+            Text(
+              disukai
+                  ? 'Kamu menyukai produk ini'
+                  : 'Kamu belum menyukai produk ini',
+              style: TextStyle(
+                color: disukai ? widget.warna : Colors.grey,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
               ),
             ),
+
+            const SizedBox(height: 30),
           ],
         ),
       ),
